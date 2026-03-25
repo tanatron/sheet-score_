@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { listAnswerKeys, checkHealth } from "@/lib/api";
-import { getGradingHistory } from "@/lib/storage";
+import { listAnswerKeys, checkHealth, listHistory } from "@/lib/api";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileKey2, Activity, ClipboardCheck, AlertCircle, History } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -10,7 +9,8 @@ import { Button } from "@/components/ui/button";
 export default function DashboardPage() {
   const health = useQuery({ queryKey: ["health"], queryFn: checkHealth, retry: 1 });
   const keys = useQuery({ queryKey: ["answer-keys"], queryFn: listAnswerKeys, retry: 1 });
-  const [recentHistory] = useState(() => getGradingHistory().slice(0, 5));
+  const historyQuery = useQuery({ queryKey: ["history"], queryFn: listHistory, retry: 1 });
+  const recentHistory = historyQuery.data ? historyQuery.data.slice(0, 5) : [];
 
   const isOnline = health.data?.status === "ok";
 

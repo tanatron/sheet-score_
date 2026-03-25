@@ -52,7 +52,7 @@ export default function AnswerKeysPage() {
                 <div>
                   <p className="font-medium">{k.name}</p>
                   <p className="text-xs text-muted-foreground">
-                    Type {k.form_type} · {k.question_count} ข้อ · ID: {k.id}
+                    {k.form_type === "A" ? "ข้อกา" : k.form_type === "B" ? "ข้อฝน" : `Type ${k.form_type}`} · {k.question_count} ข้อ · ID: {k.id}
                   </p>
                 </div>
               </div>
@@ -179,8 +179,8 @@ function CreateAnswerKeyDialog() {
               <Select value={formType} onValueChange={setFormType}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="A">Type A (YOLO)</SelectItem>
-                  <SelectItem value="B">Type B (Blob)</SelectItem>
+                  <SelectItem value="A">ข้อกา</SelectItem>
+                  <SelectItem value="B">ข้อฝน</SelectItem>
                 </SelectContent>
               </Select>
             </div>

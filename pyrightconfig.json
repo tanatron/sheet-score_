@@ -1,0 +1,8 @@
+{
+  "extraPaths": ["./python-api"],
+  "executionEnvironments": [
+    {
+      "root": "./python-api"
+    }
+  ]
+}

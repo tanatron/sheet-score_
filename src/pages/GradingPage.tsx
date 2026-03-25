@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { listAnswerKeys, gradeSingle, gradeBatchDownload, getResultImageUrl, type GradeResult } from "@/lib/api";
-import { saveGradingSession } from "@/lib/storage";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -84,17 +84,7 @@ export default function GradingPage() {
       toast.success(`ตรวจเสร็จ ${collected.length} ใบ`);
     }
 
-    // Save to localStorage
-    if (collected.length > 0) {
-      const keyInfo = keys.data?.find((k) => k.id === selectedKey);
-      saveGradingSession({
-        answerKeyId: selectedKey,
-        answerKeyName: keyInfo?.name || selectedKey,
-        fileCount: collected.length,
-        fileNames: files.map((f) => f.name),
-        results: collected,
-      });
-    }
+
   };
 
   const handleCancel = () => {
@@ -136,7 +126,7 @@ export default function GradingPage() {
               <SelectContent>
                 {keys.data?.map((k) => (
                   <SelectItem key={k.id} value={k.id}>
-                    {k.name} (Type {k.form_type}, {k.question_count} ข้อ)
+                    {k.name} ({k.form_type === "A" ? "ข้อกา" : k.form_type === "B" ? "ข้อฝน" : `Type ${k.form_type}`}, {k.question_count} ข้อ)
                   </SelectItem>
                 ))}
               </SelectContent>

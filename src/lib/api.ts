@@ -97,3 +97,27 @@ export async function gradeBatchDownload(files: File[], answerKeyId: string): Pr
 export function getResultImageUrl(imageUrl: string): string {
   return `${getApiBaseUrl()}${imageUrl}`;
 }
+
+// ── History ──
+export interface HistorySessionSummary {
+  id: string;
+  timestamp: string;
+  answerKeyId: string;
+  answerKeyName: string;
+  formType: "A" | "B";
+  averagePercentage: number;
+  fileCount: number;
+}
+
+export interface HistorySessionFull extends HistorySessionSummary {
+  results: GradeResult[];
+}
+
+export const listHistory = (search: string = "") => {
+  const url = search ? `/api/history?search=${encodeURIComponent(search)}` : "/api/history";
+  return request<HistorySessionSummary[]>(url);
+};
+
+export const getHistoryDetails = (id: string) => request<HistorySessionFull>(`/api/history/${id}`);
+
+export const deleteHistorySession = (id: string) => request<{ deleted: string }>(`/api/history/${id}`, { method: "DELETE" });
