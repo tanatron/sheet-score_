@@ -131,7 +131,7 @@ BOUNDS_B = {
 }
 
 CHOICES_B        = "ABCDE"
-SNAP             = 32
+SNAP             = 25
 
 # --- Blob detector params ---
 BLOB_MIN_AREA    = 150
@@ -959,7 +959,7 @@ def grade_type_a(img: np.ndarray, ans_key: dict) -> tuple:
 
         warped_col      = cv2.warpPerspective(img, M, (maxWidth, maxHeight))
         warped_col      = _deskew_column(warped_col)
-        x_results       = model_xmark(warped_col, conf=0.15, verbose=False)
+        x_results       = model_xmark(warped_col, conf=0.25, iou=0.45, verbose=False)
         x_boxes         = x_results[0].boxes.xywh.cpu().numpy()
         x_confs         = x_results[0].boxes.conf.cpu().numpy()
         x_points_warped = [(box[0], box[1], float(conf))
