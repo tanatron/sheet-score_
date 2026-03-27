@@ -5,7 +5,7 @@ from datetime import datetime
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL", 
-    "mysql+pymysql://tanatr_exam:_izD89TgYjmho0_c@thsv21.hostatom.com/tanatr_exam"
+    "mysql+pymysql://root:@localhost:3306/sheet_score"
 )
 
 # Use pool_recycle to prevent "MySQL server has gone away" error

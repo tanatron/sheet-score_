@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: sheet-score-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: sheet_score
+      MYSQL_USER: sheetuser
+      MYSQL_PASSWORD: sheetpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  backend:
+    build: 
+      context: ./python-api
+      dockerfile: Dockerfile
+    container_name: sheet-score-backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      # ใช้ขั้อมูลการเชื่อมต่อฐานข้อมูล MySQL ที่รันจาก service db
+      - DATABASE_URL=mysql+pymysql://sheetuser:sheetpassword@db:3306/sheet_score
+    depends_on:
+      - db
+    volumes:
+      # map source โค้ดเพื่อให้สามารถพัฒนาสะดวกโดยไม่ต้อง build ใหม่ทุกรอบ
+      - ./python-api:/app
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sheet-score-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
